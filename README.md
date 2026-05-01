@@ -1,72 +1,18 @@
-Test code for setting an relay when a FLARM is setting alarm level != 0 in the PFLAU or PFLAA NMEA-sentenses.
+This module is intended to sit between a FLARM and a FLARM-display activating a canopy flasher depending on the information. It is a open source and open hardware project based on a Raspberry PI PICO and a MOSFET transistor. 
 
-1
-![image](https://github.com/speedbird620/Blinker/assets/50543575/8bd8dc96-e763-4517-a3cc-e13d8cc22ca7)
+The blinker shall be deactivated with the folloing alogritm:
+ - A FLARM is present in the NMEA-stream
+ - The GPS-signal is valid
+ - The GPS-unit is airborne
+ - No glider within 1000 m hosrisontally and +-250 m vertically (values are configurable)
+ - The program is executing
 
+Please note that is any of the above conditions is not met, the blinker will be activated.
 
-![image](https://github.com/speedbird620/Blinker/assets/50543575/f4074236-48d8-4293-b9d3-2956fef9fdef)
+<img width="1279" height="905" alt="image" src="https://github.com/user-attachments/assets/1e9e232f-4c80-438c-b622-b64f98bf476e" />
 
-12V = Power in
+<img width="1228" height="595" alt="image" src="https://github.com/user-attachments/assets/c8ba179a-5ed6-4617-8d6f-4a7e253b13a3" />
 
-Batt = Power out
+<img width="1311" height="678" alt="image" src="https://github.com/user-attachments/assets/75c3f354-8cba-4950-825b-ca93128ead18" />
 
- 
-
-5
-![image](https://github.com/speedbird620/Blinker/assets/50543575/121bd088-d0be-420e-a7a9-a0f791b7ed83)
-
-
-![image](https://github.com/speedbird620/Blinker/assets/50543575/61bcfdfc-2190-44fe-983a-acde7f9d7a1b)
-
-Mode 0 (zero)
-
- 
-
-![image](https://github.com/speedbird620/Blinker/assets/50543575/7401771b-f156-4108-8882-cf521c4fa47b)
-
-Mode 1
-
- 
-
-![image](https://github.com/speedbird620/Blinker/assets/50543575/e19c6538-715b-4e64-ac90-c7677c8520a4)
-
-Mode 2
-
- 
-
-![image](https://github.com/speedbird620/Blinker/assets/50543575/aaed1332-38a9-4843-92f9-64f33d068e36)
-
-Mode 3
-
- 
-
-![image](https://github.com/speedbird620/Blinker/assets/50543575/7765b965-9717-4a2b-88a2-e1ea954df80c)
-
-Mode 4
-
- 
-
-![image](https://github.com/speedbird620/Blinker/assets/50543575/54c38c74-f865-416f-8f4f-417e9a169cf2)
-
-Mode 5
-
- 
-
-
-
-
-
-6
-![image](https://github.com/speedbird620/Blinker/assets/50543575/38cea1ca-dda7-43ce-ad56-279add64228f)
-
-7
-![image](https://github.com/speedbird620/Blinker/assets/50543575/2cd2848a-aa45-477d-8d46-881deacb9d0c)
-
-8
-![image](https://github.com/speedbird620/Blinker/assets/50543575/80018a52-ddc0-4f00-b429-a91d21dd5b08)
-
-2
-![image](https://github.com/speedbird620/Blinker/assets/50543575/19994068-8b5b-4b84-8c9d-564d9ace9e7c)
-
-3
-![image](https://github.com/speedbird620/Blinker/assets/50543575/5509aa12-150f-4625-a7e8-20c05e9ef8a1)
+To be continued
