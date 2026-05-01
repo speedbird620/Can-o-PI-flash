@@ -9,6 +9,10 @@ The blinker shall be deactivated with the folloing alogritm:
 
 Please note that is any of the above conditions is not met, the blinker will be activated.
 
+<img width="841" height="804" alt="image" src="https://github.com/user-attachments/assets/9eff017a-9ee8-444f-a894-073894d532ca" />
+
+<img width="895" height="803" alt="image" src="https://github.com/user-attachments/assets/ffd1724a-1b44-4dc0-9f49-9363123f1389" />
+
 <img width="1279" height="905" alt="image" src="https://github.com/user-attachments/assets/1e9e232f-4c80-438c-b622-b64f98bf476e" />
 
 <img width="1228" height="595" alt="image" src="https://github.com/user-attachments/assets/c8ba179a-5ed6-4617-8d6f-4a7e253b13a3" />
