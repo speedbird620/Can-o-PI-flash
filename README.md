@@ -4,7 +4,7 @@ The blinker shall be deactivated with the folloing alogritm:
  - A FLARM is present in the NMEA-stream
  - The GPS-signal is valid
  - The GPS-unit is airborne
- - No glider within 1000 m hosrisontally and +-250 m vertically (values are configurable)
+ - No other FLARM-unit within 1000 m hosrisontally and +-250 m vertically (values are configurable)
  - The program is executing
 
 Please note that is any of the above conditions is not met, the blinker will be activated.
