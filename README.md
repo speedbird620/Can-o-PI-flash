@@ -15,4 +15,5 @@ Please note that is any of the above conditions is not met, the blinker will be 
 
 <img width="1311" height="678" alt="image" src="https://github.com/user-attachments/assets/75c3f354-8cba-4950-825b-ca93128ead18" />
 
+
 To be continued
