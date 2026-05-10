@@ -25,14 +25,16 @@ no_comm_time = 4
 AlarmDist_H = 1000
 AlarmDist_V = 250
 MinSpeed = 10
+init = True
 
 # Pins
-WatchDogOut_Pin = Pin(2, Pin.OUT)       # Ouput to the hardware watchdog
-Deactivate_Pin = Pin(3, Pin.OUT)            # Latch to keep the FLARM on
-FlasherInActive_Pin = Pin(4, Pin.IN)            # Latch to keep the FLARM on
+EnableWatchDog_Pin = Pin(9, Pin.IN, Pin.PULL_UP)       # Ouput to the hardware watchdog
+Deactivate_Pin = Pin(15, Pin.OUT)            # Latch to keep the FLARM on
 
 #Coms
+#u0 = UART(0, baudrate=19200, bits=8, parity=None, stop=1)
 u0 = UART(0, baudrate=19200, bits=8, parity=None, stop=1)
+u1 = UART(1, baudrate=19200, bits=8, parity=None, stop=1)
 
 def subCheckSum(sentence):
 
@@ -262,19 +264,6 @@ def subExtractNMEAInfo(Sentence, MessageType):
         return Lat, Long, Time, ""
 
 
-
-def subWatchDog():
-    # Altering the watchdog output
-    WatchDogOut_Pin.value(not WatchDogOut_Pin.value())
-    """if wd_in:
-        wd_out = False
-        WatchDogOut_Pin.value(0)
-    else:
-        wd_out = True
-        WatchDogOut_Pin.value(1)
-    return wd_out"""
-
-
 def split_nmea(buf):
     """
     Split a bytes/string buffer into complete NMEA sentences.
@@ -335,8 +324,13 @@ def split_nmea(buf):
 
 while True:
     
-    subWatchDog()
-
+    if init:
+        init = False
+        if EnableWatchDog_Pin == False:
+            print("Internal watchdog is avtivated")
+        else:
+            print("No watchdog avtivated")
+    
     #MessageFromNMEAPort = u0.readline()decode('utf-8', errors='ignore').rstrip('\r\n')
 
     #print("u0: " + MessageFromNMEAPort)
@@ -344,12 +338,21 @@ while True:
     #b = u0.read().decode('utf-8')
     #raw = u0.read()
 
+    MessageFromNMEAPort = ""
+    
     if u0.any():
         #b = u0.read().decode('utf-8')
         MessageFromNMEAPort = u0.read()
         #MessageFromNMEAPort = b.decode('utf-8', 'ignore')
         #print("u0: " + str(MessageFromNMEAPort))
 
+    elif u1.any():
+        #b = u0.read().decode('utf-8')
+        MessageFromNMEAPort = u1.read()
+        #MessageFromNMEAPort = b.decode('utf-8', 'ignore')
+        #print("u0: " + str(MessageFromNMEAPort))
+
+    if len(MessageFromNMEAPort) > 0:
         #raw = b"$GPRMC,131049.00,A,5911.23097,N,01739.42720,E,0.121,,170426,,,A*76\r\n$GPGGA,131049.00,5911.23097,N,01739.42720,E,1,08,1.11,27.5,M,25.4,M,,*64\r\n$GPGSA,A,3,10,02,23,15,01,14,32,27,,,,,1.94,1.11,1.58*05\r\n"
         sentences, rem = split_nmea(MessageFromNMEAPort)
         # sentences will be 3 strings (no trailing CRLF)
@@ -357,8 +360,6 @@ while True:
         for s in sentences:
             #print("=>", s)        
                 
-            WD = subWatchDog(WD)
-
             # Extracting a sentence for further handling
             NMEALine = s[:(s.find("\r\n"))]
             
@@ -381,7 +382,7 @@ while True:
 
             if NMEALine.find("PFLAU") == 1: # and chkSumLine == chkCalculated:
 
-                print("C")
+                #print("C")
 
                 RX, TX, AlarmLevel, GPS, RelativeDistance, RelativeVertical = subExtractNMEAInfo(NMEALine, "PFLAU")
 
@@ -394,7 +395,8 @@ while True:
                     ActivateFlasher = True
                 elif int(RelativeDistance) < AlarmDist_H and (int(RelativeVertical) < AlarmDist_V or int(RelativeVertical) > -AlarmDist_V) and GPS == 2:
                     ActivateFlasher = True
-                    
+    
+    
     if time.time() > (timeout + no_comm_time):
         ActivateFlasher = True
 
@@ -403,7 +405,7 @@ while True:
 
     if ActivateFlasher or time.time() < (tajm + 10):
         Deactivate_Pin.value(0)
-        print("Alarming")
+        #print("Alarming")
     else:
         Deactivate_Pin.value(1)
         #print("yy")
@@ -414,6 +416,7 @@ while True:
     time.sleep(0.1)
 
     #print("remains = " + MessageFromNMEAPort)
+
 
 
 
