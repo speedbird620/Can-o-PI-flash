@@ -33,13 +33,18 @@ while wlan.status() != 3:
    waitcount+=1
    time.sleep(0.5)
    led.toggle()
-   if waitcount > 120:
+   if waitcount > 10:
       led.off()
-      machine.reset()
+      break
+      #machine.reset()
 
-#led on when connected to wlan
-led.on()
-print("WIFI CONNECTED TO: " + str(wlan.config('ssid')))
-print("IP: ", wlan.ifconfig()[0])
+if wlan.status() == 3:
+    #led on when connected to wlan
+    led.on()
+    print("WIFI CONNECTED TO: " + str(wlan.config('ssid')))
+    print("IP: ", wlan.ifconfig()[0])
 
-webrepl.start()
+    webrepl.start()
+else:
+    print("Failed to connect to WIFI, continuing ...")
+
