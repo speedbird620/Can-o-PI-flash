@@ -5,10 +5,8 @@
 # avionics@skyracer.net
 
 #import machine
-from machine import ADC, UART, Pin
-import utime
-import math
-import time
+from machine import WDT, UART, Pin
+import machine, math, time
 
 # Variables
 MessageFromNMEAPort = ""
@@ -326,10 +324,19 @@ while True:
     
     if init:
         init = False
-        if EnableWatchDog_Pin == False:
-            print("Internal watchdog is avtivated")
+        # Read pin value (value() returns 0 or 1). Adjust active logic as your hardware expects.
+        WDT_TIMEOUT_MS = 500
+        if EnableWatchDog_Pin.value() == 0:   # active low => enable watchdog
+            try:
+                wdt = WDT(timeout=WDT_TIMEOUT_MS)
+                print("Internal watchdog activated (timeout {} ms)".format(WDT_TIMEOUT_MS))
+            except Exception as exc:
+                print("Failed to start WDT:", exc)
         else:
-            print("No watchdog avtivated")
+            print("No watchdog activated")
+    
+    if EnableWatchDog_Pin.value() == 0:
+        wdt.feed()
     
     #MessageFromNMEAPort = u0.readline()decode('utf-8', errors='ignore').rstrip('\r\n')
 
@@ -416,6 +423,7 @@ while True:
     time.sleep(0.1)
 
     #print("remains = " + MessageFromNMEAPort)
+
 
 
 
